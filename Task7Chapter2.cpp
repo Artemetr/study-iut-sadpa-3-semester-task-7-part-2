@@ -151,12 +151,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             SetDCPenColor(hdc, 0x0000ff);
             RECT r;
             GetClientRect(hWnd, &r);
+
+            //draw recursive triangle
+            int a[2] = { (r.right + r.left) / 2 - (r.right - r.left) / 4, (r.top + r.bottom) / 2 - (r.top - r.bottom) / 4 };
+            int b[2] = { (r.right + r.left) / 2 - (r.right - r.left) / 4, (r.top + r.bottom) / 2 + (r.top - r.bottom) / 4 };
+            int c[2] = { (r.right + r.left) / 2 + (r.right - r.left) / 4, (r.top + r.bottom) / 2 - (r.top - r.bottom) / 4 };
+            drawRecursiveTriangle(hdc, a, b, c, 3);
+
+            //crutch, so you can see the figure
+            Sleep(3000);
+            //clearing our display
+            FillRect(hdc, &r, (HBRUSH)(COLOR_WINDOW + 1));
+
+            //draw planet system
             drawPlanetSystem(hdc,
-                             (r.right + r.left) / 2,
-                             (r.bottom + r.top) / 2,
-                             60,
-                             4, 4);
-            // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
+                (r.right + r.left) / 2,
+                (r.bottom + r.top) / 2,
+                120,
+                7, 4, 1.6, 0.5);
+
             EndPaint(hWnd, &ps);
         }
         break;
